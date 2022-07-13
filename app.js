@@ -12,9 +12,12 @@ app.use("/clients", clientsRouter);
 const adressessRouter = require("./routes/adresses.routes");
 app.use("/adresses", adressessRouter);
 
-//creating CRUD
+//creating routes
+const clientsRouter = require("./routes/clients.routes");
+app.use("/clients", clientsRouter);
 
-app.post("/create", () => {});
+const adressessRouter = require("./routes/adresses.routes");
+app.use("/adresses", adressessRouter);
 
 //server port listening
 app.listen(4000, () => {
