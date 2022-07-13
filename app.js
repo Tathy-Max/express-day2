@@ -12,13 +12,6 @@ app.use("/clients", clientsRouter);
 const adressessRouter = require("./routes/adresses.routes");
 app.use("/adresses", adressessRouter);
 
-//creating routes
-const clientsRouter = require("./routes/clients.routes");
-app.use("/clients", clientsRouter);
-
-const adressessRouter = require("./routes/adresses.routes");
-app.use("/adresses", adressessRouter);
-
 //server port listening
 app.listen(4000, () => {
   console.log("server running at port 4000");
