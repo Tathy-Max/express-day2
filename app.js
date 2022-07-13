@@ -18,5 +18,5 @@ app.post("/create", () => {});
 
 //server port listening
 app.listen(4000, () => {
-  console.log("servidor rodando na porta 4000");
+  console.log("server running at port 4000");
 });

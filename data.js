@@ -1,3 +1,7 @@
-const data = [];
+const data = [
+  {
+    name: "tathyanna",
+  },
+];
 
 module.exports = data;
