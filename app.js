@@ -4,15 +4,20 @@ const express = require("express");
 const app = express();
 //calling express.json method to read and return json files
 app.use(express.json());
+//setting dotEnv
+require("dotenv").config();
+//setting DB
+const connect = require("./config/db.config");
+connect();
 
 //creating routes
 const clientsRouter = require("./routes/clients.routes");
 app.use("/clients", clientsRouter);
 
-const adressessRouter = require("./routes/adresses.routes");
-app.use("/adresses", adressessRouter);
+const answersRouter = require("./routes/answers.routes");
+app.use("/answers", answersRouter);
 
 //server port listening
-app.listen(4000, () => {
-  console.log("server running at port 4000");
+app.listen(Number(process.env.PORT), () => {
+  console.log(`server up and running http://localhost:${process.env.PORT}`);
 });
