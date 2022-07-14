@@ -2,11 +2,8 @@
 const express = require("express");
 //importing express' Router function
 const router = require("express").Router();
-
-//importing data.js
-// const data = require("../data");
-//importing uuid
-// const { v4: uuidv4 } = require("uuid");
+//importing ClientsModel
+const ClientsModel = require("../models/Clients.model");
 
 //router functions
 
@@ -81,3 +78,8 @@ router.delete("/delete/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+//importing data.js
+// const data = require("../data");
+//importing uuid
+// const { v4: uuidv4 } = require("uuid");
