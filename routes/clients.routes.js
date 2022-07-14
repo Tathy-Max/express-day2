@@ -9,56 +9,75 @@ const router = require("express").Router();
 // const { v4: uuidv4 } = require("uuid");
 
 //router functions
+
 //create
-router.post("/create-client", (req, res) => {
-  data.push({ ...req.body, id: uuidv4() });
-  return res
-    .status(201)
-    .json({ message: "client was added successfully", array: data });
+
+router.post("/create-clients", async (req, res) => {
+  try {
+    const newClient = await ClientsModel.create(req.body);
+
+    return res.status(201).json(newClient);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
 });
 
-//read
-router.get("/read", (req, res) => {
-  return res.status(200).json(data);
+//read - all
+
+router.get("/all-clients", async (req, res) => {
+  try {
+    const allClients = await ClientsModel.find();
+
+    return res.status(200).json(allClients);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
 });
 
-//creating an id
-router.get("/details/:id", (req, res) => {
-  const { id } = req.params;
+//read details
 
-  const document = data.filter((currentDocument) => currentDocument.id === id);
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  return res.status(200).json(document[0]);
+    const client = await ClientsModel.findById(id).populate("answers");
+
+    return res.status(200).json(client);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
 });
 
 //edit
-router.put("/edit/:id", (req, res) => {
-  const { id } = req.params;
 
-  data.forEach((currentDocument, i) => {
-    if (currentDocument.id === id) {
-      data[i] = { ...req.body, id: currentDocument.id };
-    }
-  });
+router.put("/edit-client/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  const newDocument = data.filter(
-    (currentDocument) => currentDocument.id === id
-  );
+    const clientEdited = await ClientsModel.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      { new: true }
+    );
 
-  return res.status(200).json(newDocument[0]);
+    return res.status(200).json(clientEdited);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
 });
 
 //delete
-router.delete("/delete/:id", (req, res) => {
-  const { id } = req.params;
 
-  const document = data.filter((currentDocument) => currentDocument.id === id);
+router.delete("/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  const index = data.indexOf(document[0]);
+    const clientDeleted = await ClientsModel.findByIdAndDelete(id);
 
-  data.splice(index, 1);
-
-  return res.status(200).json(data);
+    return res.status(200).json(clientDeleted);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
 });
 
 module.exports = router;
