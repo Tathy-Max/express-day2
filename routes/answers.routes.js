@@ -22,62 +22,65 @@ router.post("/create-answers/:idClient", async (req, res) => {
   }
 });
 
-// //read - all
+//read - all
 
-// router.get("/all-clients", async (req, res) => {
-//   try {
-//     const allClients = await ClientsModel.find();
+router.get("/all-answers", async (req, res) => {
+  try {
+    const allAnswers = await AnswersModel.find();
 
-//     return res.status(200).json(allClients);
-//   } catch (error) {
-//     return res.status(500).json({ msg: error });
-//   }
-// });
+    return res.status(200).json(allAnswers);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+});
 
-// //read details
+//read details
 
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     const client = await ClientsModel.findById(id).populate("answers");
+    const answerDetail = await AnswersModel.findById(id).populate("clients");
 
-//     return res.status(200).json(client);
-//   } catch (error) {
-//     return res.status(500).json({ msg: error });
-//   }
-// });
+    return res.status(200).json(answerDetail);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+});
 
-// //edit
+//edit
 
-// router.put("/edit-client/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
+router.put("/edit-answer/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     const clientEdited = await ClientsModel.findByIdAndUpdate(
-//       id,
-//       { ...req.body },
-//       { new: true }
-//     );
+    const answerEdited = await AnswersModel.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      { new: true }
+    );
 
-//     return res.status(200).json(clientEdited);
-//   } catch (error) {
-//     return res.status(500).json({ msg: error });
-//   }
-// });
+    return res.status(200).json(answerEdited);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+});
 
-// //delete
+//delete
 
-// router.delete("/delete/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
+router.delete("/delete-answer/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     const clientDeleted = await ClientsModel.findByIdAndDelete(id);
+    const answerDeleted = await AnswersModel.findByIdAndDelete(id);
+    await ClientsModel.findByIdAndUpdate(answerDeleted.client, {
+      $pull: { answers: answerDeleted._id },
+    });
 
-//     return res.status(200).json(clientDeleted);
-//   } catch (error) {
-//     return res.status(500).json({ msg: error });
-//   }
-// });
+    return res.status(200).json(answerDeleted);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+});
 
 module.exports = router;
